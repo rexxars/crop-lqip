@@ -4,6 +4,7 @@ import sourceMaps from 'rollup-plugin-sourcemaps'
 import typescript from 'rollup-plugin-typescript2'
 
 const browserName = 'crop-lqip.browser'
+
 export default {
   input: `src/${browserName}.ts`,
   output: [
