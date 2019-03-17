@@ -2,7 +2,7 @@ import {Crop} from './types'
 
 module.exports = cropLqip
 
-function cropLqip(dataUrl: string, crop: Crop): PromiseLike<string> {
+function cropLqip(dataUrl: string, crop: Crop): Promise<string> {
   return new Promise((resolve, reject) => {
     const img = new Image()
     img.onload = () => doCrop(img, crop, resolve, reject)

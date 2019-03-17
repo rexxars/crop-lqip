@@ -3,7 +3,7 @@ import {Crop} from './types'
 
 export default cropLqip
 
-function cropLqip(dataUrl: string, crop: Crop): PromiseLike<string> {
+function cropLqip(dataUrl: string, crop: Crop): Promise<string> {
   const buffer = Buffer.from(dataUrl.replace(/.*?;base64,/, ''), 'base64')
   return Jimp.read(buffer).then(image => doCrop(image, crop))
 }
