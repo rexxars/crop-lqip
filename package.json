@@ -6,14 +6,15 @@
     "lqip",
     "crop"
   ],
-  "main": "index.js",
-  "browser": "dist/crop-lqip.browser.umd.js",
-  "module": "dist/crop-lqip.browser.es5.js",
-  "typings": "dist/types/crop-lqip.node.d.ts",
+  "main": "dist/node/crop-lqip.js",
+  "browser": "dist/browser/crop-lqip.umd.js",
+  "umd:main": "dist/browser/crop-lqip.umd.js",
+  "module": "dist/browser/crop-lqip.mjs",
+  "typings": "dist/node/crop-lqip.node.d.ts",
   "files": [
-    "index.js",
     "dist"
   ],
+  "amdName": "cropLqip",
   "author": "Espen Hovlandsdal <espen@hovlandsdal.com>",
   "repository": {
     "type": "git",
@@ -25,10 +26,11 @@
   },
   "scripts": {
     "prepublishOnly": "npm run build",
+    "build": "npm run build:node && npm run build:browser",
+    "build:node": "microbundle build -o dist/node --entry src/crop-lqip.node.ts --format es,cjs --target node --no-compress",
+    "build:browser": "microbundle build -o dist/browser --entry src/crop-lqip.browser.ts",
     "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
-    "build": "tsc --module commonjs && rollup -c rollup.config.ts",
-    "start": "rollup -c rollup.config.ts -w",
     "test": "jest --coverage",
     "test:watch": "jest --coverage --watch",
     "test:prod": "npm run lint && npm run test -- --no-cache"
@@ -62,18 +64,12 @@
     "@types/jest": "^24.0.11",
     "@types/node": "^10.11.0",
     "jest": "^24.5.0",
-    "jest-config": "^24.5.0",
+    "microbundle": "^0.11.0",
     "prettier": "^1.14.3",
     "rimraf": "^2.6.2",
-    "rollup": "^0.67.0",
-    "rollup-plugin-commonjs": "^9.1.8",
-    "rollup-plugin-node-resolve": "^3.4.0",
-    "rollup-plugin-sourcemaps": "^0.4.2",
-    "rollup-plugin-typescript2": "^0.20.1",
     "ts-jest": "^24.0.0",
     "tslint": "^5.11.0",
-    "tslint-config-prettier": "^1.15.0",
-    "typescript": "^3.0.3"
+    "tslint-config-prettier": "^1.15.0"
   },
   "dependencies": {
     "@jimp/custom": "0.6.0",
