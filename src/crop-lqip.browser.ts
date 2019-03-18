@@ -11,6 +11,11 @@ function cropLqip(dataUrl: string, crop: Crop): Promise<string> {
   })
 }
 
+cropLqip.hasSync = false
+cropLqip.sync = (dataUrl: string, crop: Crop): string => {
+  throw new Error('Sync API not implemented in browser')
+}
+
 function doCrop(
   img: HTMLImageElement,
   crop: Crop,

@@ -38,6 +38,15 @@ cropLqip(lqip, crop)
   })
 ```
 
+## Synchronous usage
+
+** Note: ** This is only available in Node.js. Use `cropLqip.hasSync` to check whether or not the feature is available.
+
+```js
+const croppedUrl = cropLqip.sync(lqip, crop)
+someImageEl.src = croppedUrl
+```
+
 ## License
 
 MIT © [Espen Hovlandsdal](https://espen.codes/)
