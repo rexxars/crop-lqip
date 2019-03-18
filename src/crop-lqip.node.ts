@@ -32,7 +32,7 @@ function cropLqip(dataUrl: string, crop: Crop): Promise<string> {
   })
 }
 
-cropLqip.hasSync = false
+cropLqip.hasSync = true
 
 // Super hacky. Jimp only pretends to be async - none of the callbacks except
 // the initial constructor call is actually deferred until the next nick.

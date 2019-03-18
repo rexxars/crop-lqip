@@ -18,6 +18,10 @@ it('crops LQIP to expected size', async () => {
   expect(cropped).toBe(target)
 })
 
+it('reports hasSync in node', () => {
+  expect(cropLqip.hasSync).toBe(true)
+})
+
 it('crops LQIP to expected size (sync)', () => {
   const cropped = cropLqip.sync(source, crop)
   expect(cropped).toBe(target)
