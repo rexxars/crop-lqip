@@ -1,6 +1,8 @@
 import {Jimp} from '@jimp/custom'
+import {calculateCrop} from './calculateCrop'
+import {defaultHotspot} from './defaults'
 import {Jimp as Jimper} from './jimp'
-import {Crop} from './types'
+import {CropOptions} from './types'
 
 export default cropLqip
 
@@ -8,28 +10,36 @@ const noop = () => {
   /* intentional noop */
 }
 
-function getCoords(img: Jimp, crop: Crop) {
-  const imgWidth = img.bitmap.width
-  const imgHeight = img.bitmap.height
+function transform(img: Jimp, options: CropOptions) {
+  const scale = options.scale || 1
+  const imgWidth = img.bitmap.width * scale
+  const imgHeight = img.bitmap.height * scale
 
-  const srcX = imgWidth * crop.left
-  const srcY = imgHeight * crop.top
-  const cropWidth = imgWidth - srcX - imgWidth * crop.right
-  const cropHeight = imgHeight - srcY - imgHeight * crop.bottom
-  return {srcX, srcY, cropWidth, cropHeight}
+  const rect = calculateCrop(
+    options.crop,
+    options.hotspot || defaultHotspot,
+    {width: imgWidth, height: imgHeight},
+    options.aspectRatio
+  )
+
+  if (options.scale && options.scale !== 1) {
+    img.resize(img.bitmap.width * options.scale, img.bitmap.height * options.scale)
+  }
+
+  const {x, y, width, height} = rect
+  img.crop(x, y, width, height)
+  return img
 }
 
 function dataUrlToBuffer(url: string) {
   return Buffer.from(url.replace(/.*?;base64,/, ''), 'base64')
 }
 
-function cropLqip(dataUrl: string, crop: Crop): Promise<string> {
+function cropLqip(dataUrl: string, options: CropOptions): Promise<string> {
   const buffer = dataUrlToBuffer(dataUrl)
-  return Jimper.read(buffer).then(img => {
-    const {srcX, srcY, cropWidth, cropHeight} = getCoords(img, crop)
-    img.crop(srcX, srcY, cropWidth, cropHeight)
-    return img.getBase64Async(img.getMIME())
-  })
+  return Jimper.read(buffer)
+    .then(img => transform(img, options))
+    .then(img => img.getBase64Async(img.getMIME()))
 }
 
 cropLqip.hasSync = true
@@ -39,7 +49,7 @@ cropLqip.hasSync = true
 // Since we want a sync way to do the crop in certain cases, we lock the Jimp
 // dependencies (in case of sudden deferring) and simply depend on the callbacks
 // being called syncronously.
-cropLqip.sync = (dataUrl: string, crop: Crop): string => {
+cropLqip.sync = (dataUrl: string, options: CropOptions): string => {
   const buffer = dataUrlToBuffer(dataUrl)
   const img = new Jimper(buffer, noop)
 
@@ -50,9 +60,7 @@ cropLqip.sync = (dataUrl: string, crop: Crop): string => {
       throw parseErr
     }
 
-    const {srcX, srcY, cropWidth, cropHeight} = getCoords(img, crop)
-    img.crop(srcX, srcY, cropWidth, cropHeight)
-    img.getBase64(img.getMIME(), (err?: Error, val?: string) => {
+    transform(img, options).getBase64(img.getMIME(), (err?: Error, val?: string) => {
       if (err) {
         throw err
       }

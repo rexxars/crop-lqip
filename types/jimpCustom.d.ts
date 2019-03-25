@@ -13,7 +13,8 @@ declare module '@jimp/custom' {
     bitmap: Bitmap
 
     constructor(buf: Buffer, cb: Function)
-    crop(x: number, y: number, w: number, h: number): Jimp
+    crop(x: number, y: number, w: number, h: number): this
+    resize(w: number, h: number): this
     parseBitmap(buf: Buffer, path: string | null, cb: (err?: Error) => void): void
     getMIME(): string
     getBase64(mime: string, cb: (err?: Error, val?: string) => void): void

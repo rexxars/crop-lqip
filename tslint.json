@@ -6,6 +6,7 @@
     "object-literal-sort-keys": false,
     "member-access": false,
     "no-empty": false,
-    "no-unused-variable": true
+    "no-unused-variable": true,
+    "no-implicit-dependencies": [true, "dev"]
   }
 }
