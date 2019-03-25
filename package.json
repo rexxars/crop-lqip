@@ -1,6 +1,6 @@
 {
   "name": "crop-lqip",
-  "version": "1.0.5",
+  "version": "2.0.0",
   "description": "Applies crop definition to an LQIP (low-quality image placeholder)",
   "keywords": [
     "lqip",
