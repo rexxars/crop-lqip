@@ -1,3 +1,7 @@
+
+> [!WARNING]
+> This module is no longer maintained.
+
 # crop-lqip
 
 [![npm version](https://img.shields.io/npm/v/crop-lqip.svg?style=flat-square)](https://www.npmjs.com/package/crop-lqip)[![bundle size](https://img.shields.io/bundlephobia/minzip/crop-lqip.svg?style=flat-square)](https://bundlephobia.com/result?p=crop-lqip)[![Build Status](https://img.shields.io/travis/rexxars/crop-lqip/master.svg?style=flat-square)](https://travis-ci.org/rexxars/crop-lqip)
